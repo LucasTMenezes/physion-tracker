@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { env } from "../config/env";
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
@@ -17,7 +18,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
     const token = parts[1];
 
     try {
-        const decoded = jwt.verify(token as string, "secret_key");
+        const decoded = jwt.verify(token as string, env.JWT_SECRET);
         (req as any).user = decoded;
 
         next();
